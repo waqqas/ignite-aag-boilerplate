@@ -41,7 +41,7 @@ async function install (context) {
 
   const name = parameters.third
   const spinner = print
-    .spin(`using the ${red('Infinite Red')} boilerplate v2 (code name 'Andross')`)
+    .spin(`using the ${red('Waqqas Jabbar')} boilerplate v1 (code name 'CHINGARI')`)
     .succeed()
 
   // attempt to install React Native or die trying
@@ -62,14 +62,7 @@ async function install (context) {
     overwrite: true,
     matching: '!*.ejs'
   })
-  filesystem.copy(`${__dirname}/boilerplate/Tests`, `${process.cwd()}/Tests`, {
-    overwrite: true,
-    matching: '!*.ejs'
-  })
-  filesystem.copy(`${__dirname}/boilerplate/storybook`, `${process.cwd()}/storybook`, {
-    overwrite: true,
-    matching: '!*.ejs'
-  })
+
   spinner.stop()
 
   // --max, --min, interactive
@@ -87,8 +80,6 @@ async function install (context) {
   const templates = [
     { template: 'index.js.ejs', target: 'index.js' },
     { template: '.gitignore.ejs', target: '.gitignore' },
-    { template: 'README.md', target: 'README.md' },
-    { template: 'ignite.json.ejs', target: 'ignite/ignite.json' },
     { template: '.editorconfig', target: '.editorconfig' },
     { template: '.watchmanconfig', target: '.watchmanconfig' },
     { template: '.flowconfig', target: '.flowconfig' },
@@ -99,10 +90,7 @@ async function install (context) {
   const templateProps = {
     name,
     igniteVersion: ignite.version,
-    reactNativeVersion: rnInstall.version,
-    vectorIcons: answers['vector-icons'],
-    animatable: answers['animatable'],
-    i18n: answers['i18n']
+    reactNativeVersion: rnInstall.version
   }
   await ignite.copyBatch(context, templates, templateProps, {
     quiet: true,
@@ -165,50 +153,25 @@ async function install (context) {
   // pass long the debug flag if we're running in that mode
   const debugFlag = parameters.options.debug ? '--debug' : ''
 
-  // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-  // NOTE(steve): I'm re-adding this here because boilerplates now hold permanent files
-  // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
   try {
     // boilerplate adds itself to get plugin.js/generators etc
     // Could be directory, npm@version, or just npm name.  Default to passed in values
-    const boilerplate = parameters.options.b || parameters.options.boilerplate || 'ignite-ir-boilerplate'
+    // const boilerplate = parameters.options.b || parameters.options.boilerplate || 'ignite-ir-boilerplate'
 
-    await system.spawn(`ignite add ${boilerplate} ${debugFlag}`, { stdio: 'inherit' })
+    // await system.spawn(`ignite add ${boilerplate} ${debugFlag}`, { stdio: 'inherit' })
+    // await system.spawn(`ignite add redux-persist@"~>1.0.1" ${debugFlag}`, {stdio: 'inherit'})
+    // await system.spawn(`ignite add standard@"~>1.0.0" ${debugFlag}`, {stdio: 'inherit'})
+    //
+    // if (answers['vector-icons'] === 'react-native-vector-icons') {
+    //   await system.spawn(`ignite add vector-icons@"~>1.0.0" ${debugFlag}`, {
+    //     stdio: 'inherit'
+    //   })
+    // }
+    //
+    // if (answers['i18n'] === 'react-native-i18n') {
+    //   await system.spawn(`ignite add i18n@"~>1.0.0" ${debugFlag}`, { stdio: 'inherit' })
+    // }
 
-    // now run install of Ignite Plugins
-    if (answers['dev-screens'] === 'Yes') {
-      await system.spawn(`ignite add dev-screens@"~>2.2.0" ${debugFlag}`, {
-        stdio: 'inherit'
-      })
-    }
-
-    if (answers['vector-icons'] === 'react-native-vector-icons') {
-      await system.spawn(`ignite add vector-icons@"~>1.0.0" ${debugFlag}`, {
-        stdio: 'inherit'
-      })
-    }
-
-    if (answers['i18n'] === 'react-native-i18n') {
-      await system.spawn(`ignite add i18n@"~>1.0.0" ${debugFlag}`, { stdio: 'inherit' })
-    }
-
-    if (answers['animatable'] === 'react-native-animatable') {
-      await system.spawn(`ignite add animatable@"~>1.0.0" ${debugFlag}`, {
-        stdio: 'inherit'
-      })
-    }
-
-    if (answers['redux-persist'] === 'Yes') {
-      await system.spawn(`ignite add redux-persist@"~>1.0.1" ${debugFlag}`, {
-        stdio: 'inherit'
-      })
-    }
-
-    if (parameters.options.lint !== 'false') {
-      await system.spawn(`ignite add standard@"~>1.0.0" ${debugFlag}`, {
-        stdio: 'inherit'
-      })
-    }
   } catch (e) {
     ignite.log(e)
     throw e
@@ -242,10 +205,6 @@ async function install (context) {
       react-native run-ios
       react-native run-android${androidInfo}
       ignite --help
-
-    ${gray('Read the walkthrough at https://github.com/infinitered/ignite-ir-boilerplate/blob/master/readme.md#boilerplate-walkthrough')}
-
-    ${blue('Need additional help? Join our Slack community at http://community.infinite.red.')}
 
     ${bold('Now get cooking! 🍽')}
   `
